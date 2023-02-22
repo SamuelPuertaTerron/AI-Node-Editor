@@ -16,7 +16,8 @@ namespace NodeTool
             }
             else 
             {
-                Debug.LogError("Graph is null: Please assign it in the inspector");    
+                Debug.LogError("Graph is null: Please assign it in the inspector");
+		return;
             }
         }
     }

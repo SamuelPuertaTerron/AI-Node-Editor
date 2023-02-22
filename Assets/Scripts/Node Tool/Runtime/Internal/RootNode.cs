@@ -10,7 +10,13 @@ namespace NodeTool
 
         public override object OnGetValue()
         {
-            return child.OnGetValue();
+	    if(child)	
+            	return child.OnGetValue();
+	    else
+	    {
+		Debug.LogError("Child is null: A Root Node needs to have a child node connected");
+		return null;
+	    }
         }
     }
 }

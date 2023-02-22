@@ -13,7 +13,7 @@ namespace NodeTool
         /// <summary>
         /// This is called when the node is created in the Graph Window
         /// </summary>
-        public virtual void OnCreateNode() { m_guid = GUID.Generate().ToString(); Debug.Log("Created A GUID"); }
+        public virtual void OnCreateNode() {}
         
         /// <summary>
         /// This is called when a node is connected to another node. Only called once

@@ -58,11 +58,9 @@ namespace NodeToolEditor
 
             
             GUILayout.Label("Graph Name");
-            AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(m_graph), m_graph.graphName);
             m_graph.graphName = GUILayout.TextField(titleText);
             m_graph.name = m_graph.graphName;
             AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(m_graph), m_graph.graphName);
-            AssetDatabase.Refresh();
             
 
             EditorGUI.indentLevel++;
