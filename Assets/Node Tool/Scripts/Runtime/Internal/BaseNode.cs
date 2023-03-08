@@ -13,7 +13,11 @@ namespace NodeTool
         /// <summary>
         /// This is called when the node is created in the Graph Window
         /// </summary>
+<<<<<<< HEAD:Assets/Node Tool/Scripts/Runtime/Internal/BaseNode.cs
         public virtual void OnCreateNode() {  }
+=======
+        public virtual void OnCreateNode() {}
+>>>>>>> be552c9bf66ad2f1ddea14e2d779fb9504161242:Assets/Scripts/Node Tool/Runtime/Internal/BaseNode.cs
         
         /// <summary>
         /// This is called when the node is called in the Editor
