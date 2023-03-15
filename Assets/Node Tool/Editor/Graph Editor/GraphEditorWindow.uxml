@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/Node%20Tool/GraphEditorWindow.uss?fileID=7433441132597879392&amp;guid=424e70e6ee76bcb4a9e4198a52452006&amp;type=3#GraphEditorWindow" />
+    <ui:VisualElement name="GraphEditorView" style="flex-grow: 1; opacity: 1; display: flex; visibility: visible;">
+        <NodeToolEditor.UI.SplitVisualEditor>
+            <ui:VisualElement name="InspectorEditorView" style="width: 250px;">
+                <NodeToolEditor.UI.InsepctorEditor style="width: auto; height: 500px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="GraphEditorView">
+                <NodeToolEditor.UI.GraphEditor focusable="true" style="width: auto; height: auto; flex-grow: 1; position: relative;" />
+            </ui:VisualElement>
+        </NodeToolEditor.UI.SplitVisualEditor>
+    </ui:VisualElement>
+</ui:UXML>

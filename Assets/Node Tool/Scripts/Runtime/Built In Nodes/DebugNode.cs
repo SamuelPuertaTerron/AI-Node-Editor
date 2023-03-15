@@ -4,9 +4,13 @@ using UnityEngine;
 
 namespace NodeTool
 {
-    public class DebugNode : BaseNode
+    public class DebugNode : PureNode
     {
-        
+        public override object OnNodeStart()
+        {
+            Debug.Log("Hello World!");
+            return null;
+        }
     }
 }
 

@@ -10,21 +10,41 @@ namespace NodeTool
         public string Guid { get { return m_guid; } }
         public Vector2 Position { get { return m_position; } set { m_position = value; } }
 
-        /// <summary>
-        /// This is called when the node is created in the Graph Window
-        /// </summary>
-<<<<<<< HEAD:Assets/Node Tool/Scripts/Runtime/Internal/BaseNode.cs
-        public virtual void OnCreateNode() {  }
-=======
-        public virtual void OnCreateNode() {}
->>>>>>> be552c9bf66ad2f1ddea14e2d779fb9504161242:Assets/Scripts/Node Tool/Runtime/Internal/BaseNode.cs
+        public GameObject ParentObject { get { return m_parentObject; } set { m_parentObject = value; } }
         
         /// <summary>
-        /// This is called when the node is called in the Editor
+        /// This is called on the first frame when in play mode
+        /// </summary>
+        public virtual object OnNodeStart()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// This is called every frame when in play mode
         /// </summary>
         public virtual object OnNodeUpdate()
         {
             return null;
+        }
+
+        /// <summary>
+        /// This is called when the node is created in the Graph Window
+        /// </summary>
+        public virtual void OnCreateNode() {  }
+
+        /// <summary>
+        /// Called when the node has exited play mode
+        /// </summary>
+        public virtual void OnNodeExit() { }
+        
+        /// <summary>
+        /// This is called when the node gets cloned
+        /// </summary>
+        /// <returns></returns>
+        public virtual BaseNode OnCloneNode()
+        {
+            return Instantiate(this);
         }
 
         public void GenerateGUID()
@@ -34,8 +54,14 @@ namespace NodeTool
 
         //--------------- Private -----------------------//
 
-        private string m_guid;
-        private Vector2 m_position;
+        private GameObject m_parentObject;
+        public string m_guid;
+        public Vector2 m_position;
+
+        private void OnDisable()
+        {
+            OnNodeExit();
+        }
    }
 }
 

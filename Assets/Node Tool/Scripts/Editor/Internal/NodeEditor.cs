@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NodeToolEditor
 {
-    public class NodeEditor
+    public class NodeEditor 
     {
         public virtual void DrawNodeEditor()
         {

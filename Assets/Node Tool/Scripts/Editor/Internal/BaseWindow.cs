@@ -37,7 +37,7 @@ namespace NodeToolEditor
             m_root = rootVisualElement;
             m_VisualTreeAsset.CloneTree(m_root);
             
-            StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Node Tool/Editor/Node Tool/GraphEditorWindow.uss");
+            StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Node Tool/Editor/Graph Editor/GraphEditorWindow.uss");
             m_root.styleSheets.Add(styleSheet);
             
             Init();

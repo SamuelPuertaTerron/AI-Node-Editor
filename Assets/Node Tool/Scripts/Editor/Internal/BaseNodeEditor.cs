@@ -18,10 +18,10 @@ namespace NodeToolEditor
         {
             node = p_node;
             title = p_node.name;
-            viewDataKey = p_node.Guid;
+            viewDataKey = p_node.m_guid;
 
-            style.left = node.Position.x;
-            style.top = node.Position.y;
+            style.left = node.m_position.x;
+            style.top = node.m_position.y;
 
             Draw();
         }
@@ -47,16 +47,56 @@ namespace NodeToolEditor
         {
             if (node is not RootNode)
             {
-                input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(BaseNode));
-                inputContainer.Add(input);
+                if (node is PureNode)
+                {
+                    input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(BaseNode));
+                    inputContainer.Add(input);
+                }
+
+                if (node is SingleNode)
+                {
+                    input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(BaseNode));
+                    inputContainer.Add(input);
+                }
+
+                if (node is MultiNode)
+                {
+                    input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(BaseNode));
+                    inputContainer.Add(input);
+                }
             }
         }
 
         private void DrawPortOutput()
         {
-            output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(BaseNode));
+            if (node is not PureNode)
+            {
+                if (node is RootNode)
+                {
+                    output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(BaseNode));
 
-            outputContainer.Add(output);
+                    outputContainer.Add(output);
+                }
+
+                if (node is SingleNode)
+                {
+                    output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(BaseNode));
+                    outputContainer.Add(output);
+                }
+
+                if (node is MultiNode)
+                {
+                    output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(BaseNode));
+                    outputContainer.Add(output);
+                }
+            }
+        }
+
+        public override void SetPosition(Rect newPos)
+        {
+            base.SetPosition(newPos);
+            node.m_position.x = newPos.x;
+            node.m_position.y = newPos.y;
         }
     }
 }
