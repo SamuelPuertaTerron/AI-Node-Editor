@@ -6,14 +6,14 @@ using NodeTool;
 public class #SCRIPTNAME# : PureNode
 {
     // This is called on the first frame when in play mode
-    public override object OnNodeStart()
+    public override void OnNodeStart()
     {
-        return null;
+
     }
     
     // This is called every frame when in play mode
-    public override object OnNodeUpdate()
+    public override void OnNodeUpdate()
     {
-        return null; 
+        
     }
 }
