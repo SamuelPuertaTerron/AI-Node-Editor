@@ -10,7 +10,7 @@ namespace AINodeTool
 
         private void Start()
         {
-            GetComponent<AINodeTool.Agent>().SetDestination(target.position);
+           
         }
 
         private void Update()

@@ -13,12 +13,18 @@ namespace NodeTool
 
         public override void OnNodeStart()
         {
-            childNode.OnNodeStart();
+            if(childNode != null)
+                childNode.OnNodeStart();
+            else 
+                Debug.Log("The graph failed to save correctly!");
         }
 
         public override void OnNodeUpdate()
         {
-            childNode.OnNodeUpdate();
+            if(childNode != null)
+                childNode.OnNodeUpdate();
+            else 
+                Debug.Log("The graph failed to save correctly!");
         }
     }
 }

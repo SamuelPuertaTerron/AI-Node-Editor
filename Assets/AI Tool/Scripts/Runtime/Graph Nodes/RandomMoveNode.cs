@@ -38,10 +38,7 @@ namespace AINodeTool
             }
             else
             {
-                if(ParentObject.GetComponent<Agent>().HasFoundPath)
-                    ParentObject.GetComponent<Agent>().SetDestination(RandomVector.RandomMovement(walkRaduis));
-                if(ParentObject.GetComponent<Agent>().HasReachedPath)
-                    ParentObject.GetComponent<Agent>().SetDestination(RandomVector.RandomMovement(walkRaduis));
+                ParentObject.GetComponent<Agent>().SetDestination(RandomVector.RandomMovement(walkRaduis));
             }
         }
     }

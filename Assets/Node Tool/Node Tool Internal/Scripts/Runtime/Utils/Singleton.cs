@@ -34,7 +34,6 @@ namespace NodeTool
                 Destroy(gameObject);
             }
         }
-
     }
 }
 
