@@ -10,11 +10,12 @@ namespace AINodeTool
         public delegate void TargetSpotted(GameObject spottedTarget);
         public event TargetSpotted OnTargetSpotted; 
 
-        [SerializeField] private float raduis = 1.0f;
         [SerializeField] private float sightAngle = 80f;
-        [SerializeField] private Transform lookPoint;
+        [SerializeField, Tooltip("This can be kept null")] private Transform lookPoint;
         [SerializeField] private GameObject target;
-        [SerializeField] private float updateTime = 0.25f;
+        [SerializeField, Tooltip("The time between the AI checks for objects \n " +
+            "The smaller the value the quicker will check \n " +
+            "The Larger the value the longer will check")] private float updateTime = 0.25f;
         private float m_angle;
         private Vector3 m_difference;
         private float m_currentTime;
@@ -40,9 +41,16 @@ namespace AINodeTool
         {
             if (!target) return false;
 
-            m_difference = target.transform.position - lookPoint.position;
-            m_angle = Vector3.Angle(transform.position, transform.forward);
-            return m_angle < sightAngle;
+            if (lookPoint) {
+
+                m_difference = target.transform.position - lookPoint.position;
+                m_angle = Vector3.Angle(transform.position, transform.forward);
+                return m_angle < sightAngle;
+            } else {
+                m_difference = target.transform.position - new Vector3(transform.position.x, 0.50f, transform.position.z);
+                m_angle = Vector3.Angle(transform.position, transform.forward);
+                return m_angle < sightAngle;
+            }
         }
     }
 }

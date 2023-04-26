@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
 namespace AINodeToolEditor
 {
+    using AINodeTool;
+    using UnityEngine.InputSystem;
+
     public class WaypointWindow : EditorWindow
     {
-        struct CurrentCameraData
+        internal struct CurrentCameraData
         {
             public Vector3 CameraPosition;
             public Quaternion CameraRotation;
@@ -23,36 +24,65 @@ namespace AINodeToolEditor
 
         private static CurrentCameraData m_CameraData;
 
+        private static SceneView m_View;
+
         [MenuItem("Window/AI/Way Point Window")]
         private static void ShowWindow()
         {
             var window = GetWindow<WaypointWindow>();
             window.titleContent = new GUIContent("WaypointWindow");
-            CreateCameraView();
             window.Show();
+
+            CreateCameraView();
         }
 
         private void ResetCameraView()
         {
-            SceneView view = SceneView.sceneViews[0] as SceneView;
-            view.camera.transform.position = m_CameraData.CameraPosition;
-            view.camera.transform.rotation = m_CameraData.CameraRotation;
-            view.camera.orthographic = m_CameraData.IsOrtho;
+            m_View.LookAt(m_CameraData.CameraPosition, m_CameraData.CameraRotation);
+            m_View.camera.orthographic = m_CameraData.IsOrtho;
+            m_View.Repaint();
         }
 
         private static void CreateCameraView()
         {
-            SceneView view = SceneView.sceneViews[0] as SceneView;
+            m_View = SceneView.sceneViews[0] as SceneView;
 
-            m_CameraData = new CurrentCameraData(view.camera.transform.position, view.camera.transform.rotation, view.camera.orthographic);
+            m_CameraData = new CurrentCameraData(m_View.camera.transform.position, m_View.camera.transform.rotation, m_View.camera.orthographic);
 
-            view.camera.transform.position = new Vector3(m_CameraData.CameraPosition.x, 40.0f,  m_CameraData.CameraPosition.z);
-            view.camera.transform.rotation = new Quaternion(-90, 0.0f, 0.0f, 0.0f);
-            view.camera.orthographic = true;
+            Vector3 position = SceneView.lastActiveSceneView.pivot;
+            m_View.LookAt(position, Quaternion.Euler(90, 0, 0));
+            m_View.orthographic = true;
+            m_View.Repaint();
+
+            Debug.Log(m_CameraData.IsOrtho);
         }
 
-        private void OnDestroy()
-        {
+        private void OnGUI() {
+
+            WayPointManager wayPointManager = FindObjectOfType<WayPointManager>();
+
+            Vector3 worldPoint = m_View.camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+            if (GUILayout.Button("Close")) {
+                this.Close();
+            }
+
+            if(GUILayout.Button("Create new waypoint")) {
+                GameObject obj = Instantiate(wayPointManager.WaypointObject, worldPoint, Quaternion.identity);
+                wayPointManager.WaypointPath.Add(obj);
+            }
+
+            if(GUILayout.Button("Remove Waypoint")) {
+                //Only remove a waypoint from the waypoint path if it has a waypoint script
+                if( Selection.activeGameObject.GetComponent<AINodeToolInternal.Waypoint>() != null) {
+                    wayPointManager.WaypointPath.Remove(Selection.activeGameObject);
+                    DestroyImmediate(Selection.activeGameObject);
+                }
+            }
+        }
+
+        private void OnDestroy() {
+            ResetCameraView();
         }
     }
 }
