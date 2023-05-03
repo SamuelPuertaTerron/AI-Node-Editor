@@ -6,7 +6,7 @@ namespace NodeTool
 {
     public class MultiNode : BaseNode
     {
-        public List<BaseNode> children = new List<BaseNode>();
+        [HideInInspector] public List<BaseNode> children = new List<BaseNode>();
         
         public override BaseNode OnCloneNode()
         {

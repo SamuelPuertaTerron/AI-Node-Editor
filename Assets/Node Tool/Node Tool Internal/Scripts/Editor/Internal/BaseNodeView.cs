@@ -36,8 +36,10 @@ namespace NodeToolEditor
 
             style.left = node.m_position.x;
             style.top = node.m_position.y;
+            style.color = Color.black;
+            titleContainer.style.backgroundColor = Color.green;
         }
-
+        
         private void Draw()
         {
             VisualElement customDataContainer = new VisualElement();

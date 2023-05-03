@@ -13,7 +13,6 @@ namespace NodeToolEditor.UI
         public new class UxmlFactory : UxmlFactory<InsepctorEditor, VisualElement.UxmlTraits> { }
 
         private Editor m_editor;
-        private NodeEditor m_nodeEditor;
 
         public InsepctorEditor()
         {
@@ -25,8 +24,7 @@ namespace NodeToolEditor.UI
             Clear();
             Object.DestroyImmediate(m_editor);
             m_editor = Editor.CreateEditor(nodeView.node);
-            m_nodeEditor = new NodeEditor();
-            IMGUIContainer container = new IMGUIContainer(() => { m_editor.OnInspectorGUI(); m_nodeEditor.OnInspectorGUI(); });
+            IMGUIContainer container = new IMGUIContainer(() => { m_editor.OnInspectorGUI(); });
             Add(container);
         }
     }

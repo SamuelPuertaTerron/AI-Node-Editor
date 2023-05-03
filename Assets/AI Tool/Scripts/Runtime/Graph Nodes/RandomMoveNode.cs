@@ -20,13 +20,10 @@ namespace AINodeTool
 
                 //bounds size should always have 0 on Y if in 3D mode or 0 on Z in 2D mode
                 ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
-
-
             }
             else
             {
                 ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
-                Debug.Log(ParentObject.name + " Has Move");
             }
         }
 

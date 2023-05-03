@@ -51,23 +51,21 @@ namespace AINodeTool
 
         private void Update()
         {
+            if (m_Path == null || m_Path.Count == 0) return;
+
+            Node currentPathNode = m_Path[m_PathIndex];
+            Vector3 currentPathPosition = currentPathNode.WorldPosition;
+            transform.position = Vector3.MoveTowards(transform.position, currentPathPosition, speed * Time.deltaTime);
+
+            //Increments the path index each time the AI has reached the path position
+            if (transform.position == currentPathPosition)
             {
-                if (m_Path == null || m_Path.Count == 0) return;
-
-                Node currentPathNode = m_Path[m_PathIndex];
-                Vector3 currentPathPosition = currentPathNode.WorldPosition;
-                transform.position = Vector3.MoveTowards(transform.position, currentPathPosition, speed * Time.deltaTime);
-
-                //Increments the path index each time the AI has reached the path position
-                if (transform.position == currentPathPosition)
+                m_PathIndex++;
+                if (m_PathIndex >= m_Path.Count)
                 {
-                    m_PathIndex++;
-                    if (m_PathIndex >= m_Path.Count)
-                    {
-                        HasReachedPath = true;
-                        m_Path = null;
-                        HasReachedPath = false;
-                    }
+                    HasReachedPath = true;
+                    m_Path = null;
+                    HasReachedPath = false;
                 }
             }
         }
