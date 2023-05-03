@@ -30,7 +30,7 @@ MonoBehaviour:
   m_guid: 90de6cba2bda3c640bdc3a9ceb93e713
   m_position: {x: 123, y: 0}
   childNode: {fileID: -5233033136863846347}
-  duration: 3
+  duration: 2.5
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

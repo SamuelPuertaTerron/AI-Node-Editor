@@ -9,12 +9,9 @@ namespace AINodeToolInternal
         Optimazation Improvements:
             Multithreading
      */
-    public class PathFinding : NodeTool.Singleton<PathFinding>
+    public class PathFinding : MonoBehaviour
     {
         private Grid m_Grid;
-
-        public delegate void FoundPath(List<Node> path);
-        public event FoundPath OnPathFound;
 
         private void Awake()
         {
@@ -26,11 +23,11 @@ namespace AINodeToolInternal
             }
         }
 
-        public void RequestPath(Vector3 start, Vector3 dest)
+        public List<Node> RequestPath(Vector3 start, Vector3 dest)
         {
             List<Node> path = FindPath(start, dest);
-            if(path != null)
-                if(OnPathFound != null) OnPathFound(path);
+
+            return path;
         }
 
         #region Pseudo Code
@@ -118,9 +115,11 @@ namespace AINodeToolInternal
 
                     foreach (Node node in m_Grid.GetNeighbours(currentNode).Where(n => n.Walkable && !closedSet.Contains(n)))
                     {
+                        //Find the new g cost and check if it is lower than the current gcost
                         int newGCost = currentNode.GCost + Distance(currentNode, node);
                         if (newGCost < node.GCost || !openSet.Contains(node))
                         {
+                            //Set the current node to the new node with the lower gcost
                             node.GCost = newGCost;
                             node.HCost = Distance(currentNode, node);
                             node.Parent = currentNode;
@@ -137,11 +136,12 @@ namespace AINodeToolInternal
             return null;
         }
 
-        List<Node> RetracePath(Node startNode, Node endNode)
+        private List<Node> RetracePath(Node startNode, Node endNode)
         {
             List<Node> path = new List<Node>();
             Node currentNode = endNode;
 
+            //Loops through the parent nodes until it is equal to the start node
             while (currentNode != startNode)
             {
                 path.Add(currentNode);

@@ -13,18 +13,20 @@ namespace AINodeTool
         public override void OnNodeStart()
         {
             //TODO: Find Closet bounds
+
             m_bounds = FindObjectOfType<Bounds>();
             if (m_bounds)
             {
 
-                Vector3 pos = RandomVector.RandomMovement(m_bounds.BoundSize);
                 //bounds size should always have 0 on Y if in 3D mode or 0 on Z in 2D mode
-                ParentObject.GetComponent<Agent>().SetDestination(pos);
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+
 
             }
             else
             {
-                ParentObject.GetComponent<Agent>().SetDestination(RandomVector.RandomMovement(walkRaduis));
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+                Debug.Log(ParentObject.name + " Has Move");
             }
         }
 
@@ -32,35 +34,14 @@ namespace AINodeTool
         {
             if (m_bounds)
             {
-                Vector3 pos = RandomVector.RandomMovement(m_bounds.BoundSize);
                 //bounds size should always have 0 on Y if in 3D mode or 0 on Z in 2D mode
-                ParentObject.GetComponent<Agent>().SetDestination(pos);
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
             }
             else
             {
-                ParentObject.GetComponent<Agent>().SetDestination(RandomVector.RandomMovement(walkRaduis));
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+                Debug.Log(ParentObject.name + " Has Move");
             }
-        }
-    }
-
-    public static class RandomVector
-    {
-        public static Vector3 RandomMovement(float raduis)
-        {
-            return new Vector3(
-                Random.Range(-raduis, raduis),
-                Random.Range(-raduis, raduis),
-                Random.Range(-raduis, raduis)
-            );
-        }
-
-        public static Vector3 RandomMovement(Vector3 bounds)
-        {
-            return new Vector3(
-                Random.Range(-bounds.x, bounds.x),
-                Random.Range(-bounds.y, bounds.y),
-                Random.Range(-bounds.z, bounds.z)
-            );
         }
     }
 }

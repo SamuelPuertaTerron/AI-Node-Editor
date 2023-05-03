@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 400
-    height: 300
+    x: 2
+    y: 6
+    width: 0
+    height: 6
   m_ShowMode: 0
   m_Title: 
   m_RootView: {fileID: 141}
@@ -3355,7 +3355,7 @@ MonoBehaviour:
     width: 2560
     height: 1357
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Console
   m_RootView: {fileID: 280}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -3377,8 +3377,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 400
-    height: 300
+    width: 0
+    height: 0
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
   vertical: 0
@@ -6652,7 +6652,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 41
+  controlID: 109
 --- !u!114 &284
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -6766,7 +6766,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ProjectBrowser
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -6775,14 +6775,14 @@ MonoBehaviour:
     y: 882
     width: 1999
     height: 425
-  m_MinSize: {x: 231, y: 271}
-  m_MaxSize: {x: 10001, y: 10021}
-  m_ActualView: {fileID: 294}
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 290}
   m_Panes:
   - {fileID: 294}
   - {fileID: 290}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &289
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -6802,8 +6802,8 @@ MonoBehaviour:
     y: 0
     width: 561
     height: 1307
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 295}
   m_Panes:
   - {fileID: 295}
@@ -6868,23 +6868,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 04cbffff
+      m_SelectedIDs: b098ffff
+      m_LastClickedID: -26448
+      m_ExpandedIDs: 2efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Waypoint(Clone)
-        m_OriginalName: Waypoint(Clone)
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -48866
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 286}
       m_SearchString: 
@@ -7152,9 +7152,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1.6866732, y: 9.605505, z: -5.3423347}
+    m_Target: {x: 4.090893, y: 35.85531, z: -19.842657}
     speed: 2
-    m_Value: {x: 1.6866732, y: 9.605505, z: -5.3423347}
+    m_Value: {x: 4.090893, y: 35.85531, z: -19.842657}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -7200,20 +7200,20 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.22015588, y: 0.014901587, z: -0.0033633066, w: -0.975348}
+    m_Target: {x: 0.5775728, y: 0.01665459, z: -0.011792437, w: 0.81608987}
     speed: 2
-    m_Value: {x: -0.22015525, y: 0.014901544, z: -0.003363297, w: -0.9753452}
+    m_Value: {x: 0.5775701, y: 0.01665451, z: -0.011792381, w: 0.816086}
   m_Size:
-    m_Target: 11.687096
+    m_Target: 1.2358835
     speed: 2
-    m_Value: 11.687096
+    m_Value: 1.2358835
   m_Ortho:
     m_Target: 0
     speed: 2
     m_Value: 0
   m_CameraSettings:
-    m_Speed: 0.20090088
-    m_SpeedNormalized: 0.10000044
+    m_Speed: 2
+    m_SpeedNormalized: 1
     m_SpeedMin: 0.001
     m_SpeedMax: 2
     m_EasingEnabled: 1
@@ -7371,22 +7371,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/AI Tool/Scripts/Runtime/Internal/Waypoint System
+    - Assets/AI Tool/Sample/Graphs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/AI Tool/Scripts/Runtime/Internal/Waypoint System
+  - Assets/AI Tool/Sample/Graphs
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\s4107473\Documents\GitHub\AI-Node-Editor
+  m_LastProjectPath: D:\Work\Games\Github\AI-Node-Editor
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 969a0000
-    m_LastClickedID: 39574
-    m_ExpandedIDs: 00000000269100002891000062920000649200006c9200007292000000ca9a3b
+    scrollPos: {x: 0, y: 95}
+    m_SelectedIDs: aa630000
+    m_LastClickedID: 25514
+    m_ExpandedIDs: 00000000126200001462000016620000186200001a6200001c6200001e62000020620000226200002462000026620000286200002a6200002c6200002e62000030620000326200003462000036620000386200003a620000626200006a6200007262000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -7414,7 +7414,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 
+    m_ExpandedIDs: 00000000126200001462000016620000186200001a6200001c6200001e62000020620000226200002462000026620000286200002a6200002c6200002e62000030620000326200003462000036620000386200003a620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -7439,8 +7439,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: b098ffff
+    m_LastClickedInstanceID: -26448
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300008cf0ffff1ac2ffff6eecffffeae6ffff98e4ffff9ce2ffff94f6ffff2c590000ecf8ffff16f7ffffd85a00000e5b000064e2ffff005b000002f6ffff80ecffff3aebffff62dfffff4c59000078eeffff54590000d8f1ffffaef4ffff605b0000745b00006a5b00005659000056e7ffff625900000000000022daffff5c5f0000685f0000
     m_RenameOverlay:

@@ -32,7 +32,7 @@ namespace AINodeToolEditor
             var window = GetWindow<WaypointWindow>();
             window.titleContent = new GUIContent("WaypointWindow");
             window.Show();
-
+        
             CreateCameraView();
         }
 
@@ -62,13 +62,14 @@ namespace AINodeToolEditor
             WayPointManager wayPointManager = FindObjectOfType<WayPointManager>();
 
             Vector3 worldPoint = m_View.camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-
+            
             if (GUILayout.Button("Close")) {
                 this.Close();
             }
 
             if(GUILayout.Button("Create new waypoint")) {
-                GameObject obj = Instantiate(wayPointManager.WaypointObject, worldPoint, Quaternion.identity);
+                worldPoint.y = 0.0f; //Keeps the object on the ground
+                GameObject obj = Instantiate(wayPointManager.WaypointObject, worldPoint, Quaternion.identity, wayPointManager.transform);
                 wayPointManager.WaypointPath.Add(obj);
             }
 
