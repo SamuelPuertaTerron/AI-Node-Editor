@@ -71,6 +71,8 @@ namespace AINodeToolEditor
                 worldPoint.y = 0.0f; //Keeps the object on the ground
                 GameObject obj = Instantiate(wayPointManager.WaypointObject, worldPoint, Quaternion.identity, wayPointManager.transform);
                 wayPointManager.WaypointPath.Add(obj);
+                string saveData = JsonUtility.ToJson(wayPointManager.WaypointPath.Count, false);
+                System.IO.File.WriteAllText(AINodeToolInternal.FileManager.GetPath() + "SaveData.Json", saveData);
             }
 
             if(GUILayout.Button("Remove Waypoint")) {
