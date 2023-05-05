@@ -6,9 +6,11 @@ namespace NodeTool
 {
     public class DebugNode : PureNode
     {
+        [SerializeField] private string text;
+
         public override void OnNodeStart()
         {
-            Debug.Log("Hello World!");
+            Debug.Log(text);
         }
     }
 }

@@ -69,6 +69,10 @@ namespace NodeToolEditor.UI
             foreach (var node in nodeTypes)
             {
                 //Remove Internal Nodes
+               //if(node.Name is not "SingleNode" or not "InternalNode" or not "PureNode" or not "RootNode")
+               //{
+               //    
+               //}
                 if (node.Name != "SingleNode" && node.Name != "MultiNode" && node.Name != "PureNode" && node.Name != "RootNode")
                 {
                     if (node.Namespace != null)
@@ -144,6 +148,7 @@ namespace NodeToolEditor.UI
         private void CreateNodeEditor(BaseNode node)
         {
             BaseNodeView nodeEditor = new BaseNodeView(node);
+            nodeEditor.GraphEditor = this;
             //nodeEditor.SetPosition(new Rect(position, Vector2.zero));
             nodeEditor.OnNodeSelected = OnNodeSelected;
             AddElement(nodeEditor);

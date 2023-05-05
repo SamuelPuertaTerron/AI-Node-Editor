@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NodeTool;
-using NodeToolEditor;
 
 public class DialogueNode : PureNode
 {

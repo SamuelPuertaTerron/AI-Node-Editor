@@ -15,6 +15,8 @@ namespace NodeToolEditor
         public Port input;
         public Port output;
 
+        public UI.GraphEditor GraphEditor { get; set; } 
+
         public Action<BaseNodeView> OnNodeSelected;
 
         public BaseNodeView(BaseNode p_node)
@@ -22,12 +24,12 @@ namespace NodeToolEditor
             NodeData(p_node);
             Draw();
         }
-        
+
         protected virtual void DrawNodeElements(VisualElement dataContainer)
         {
-            
+
         }
-        
+
         private void NodeData(BaseNode p_node)
         {
             node = p_node;
@@ -37,9 +39,8 @@ namespace NodeToolEditor
             style.left = node.m_position.x;
             style.top = node.m_position.y;
             style.color = Color.black;
-            titleContainer.style.backgroundColor = Color.green;
         }
-        
+
         private void Draw()
         {
             VisualElement customDataContainer = new VisualElement();
@@ -111,8 +112,15 @@ namespace NodeToolEditor
         public override void OnSelected()
         {
             base.OnSelected();
-            if(OnNodeSelected != null)
+            if (OnNodeSelected != null)
+            {
+                var colourPicker = GraphEditor.Q<UnityEditor.UIElements.ColorField>("ColourPicker");
+                if(colourPicker != null) { 
+                    titleContainer.style.backgroundColor = colourPicker.value;  
+                }
+
                 OnNodeSelected.Invoke(this);
+            }
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -123,6 +131,7 @@ namespace NodeToolEditor
             {
                 if (type.Name == node.GetType().Name && type.Namespace != "NodeTool") //Remove internal nodes from being able to be opened
                 {
+
                     evt.menu.AppendAction($"[Open Script] {type.Name}", action => MenuOpenScript(type));
                     evt.menu.AppendSeparator();
                 }
@@ -131,15 +140,15 @@ namespace NodeToolEditor
 
         private void MenuOpenScript(Type script)
         {
-            string lPath = script.Name + ".cs";
-            foreach (var lAssetPath in AssetDatabase.GetAllAssetPaths())
+            string path = script.Name + ".cs";
+            foreach (var assetPath in AssetDatabase.GetAllAssetPaths())
             {
-                if (lAssetPath.EndsWith(lPath))
+                if (assetPath.EndsWith(path))
                 {
-                    var lScript = (MonoScript)AssetDatabase.LoadAssetAtPath(lAssetPath, typeof(MonoScript));
-                    if (lScript != null)
+                    var mono = (MonoScript)AssetDatabase.LoadAssetAtPath(assetPath, typeof(MonoScript));
+                    if (mono != null)
                     {
-                        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(lAssetPath, 1);
+                        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(assetPath, 1);
                         break;
                     }
                     else
@@ -149,7 +158,6 @@ namespace NodeToolEditor
                 }
             }
         }
-
         public override bool IsCopiable()
         {
             return base.IsCopiable();

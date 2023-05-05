@@ -6,7 +6,7 @@ using UnityEngine;
 namespace NodeToolEditor
 {
     [AttributeUsage(AttributeTargets.Class)]
-    sealed class CustomNodeEditorAttribute : Attribute
+    sealed class CustomNodeEditorAttribute : PropertyAttribute
     {
         private Type m_inspectedType;
 

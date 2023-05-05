@@ -5,7 +5,7 @@ using UnityEngine;
 namespace NodeTool
 {
     [AddComponentMenu("Node Tool / Graph Runner")]
-    public class GraphRunner : MonoBehaviour
+    public sealed class GraphRunner : MonoBehaviour
     {
         [SerializeField] private BaseGraph graph;
 
