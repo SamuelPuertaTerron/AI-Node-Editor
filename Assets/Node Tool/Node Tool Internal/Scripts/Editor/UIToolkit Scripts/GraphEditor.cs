@@ -108,7 +108,7 @@ namespace NodeToolEditor.UI
                     BaseNodeView nodeView = view as BaseNodeView;
                     if (nodeView != null)
                     {
-                        m_graph.DeleteNode(nodeView.node);
+                        m_graph.DeleteNode(nodeView.BaseNode);
                     }
 
                     Edge edge = view as Edge;
@@ -116,7 +116,7 @@ namespace NodeToolEditor.UI
                     {
                         BaseNodeView parentView = edge.output.node as BaseNodeView;
                         BaseNodeView childView = edge.input.node as BaseNodeView;
-                        m_graph.RemoveChild(parentView.node, childView.node);
+                        m_graph.RemoveChild(parentView.BaseNode, childView.BaseNode);
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace NodeToolEditor.UI
                 {
                     BaseNodeView parentView = edge.output.node as BaseNodeView;
                     BaseNodeView childView = edge.input.node as BaseNodeView;
-                    m_graph.AddChild(parentView.node, childView.node);
+                    m_graph.AddChild(parentView.BaseNode, childView.BaseNode);
                 }
             }
 

@@ -32,7 +32,9 @@ namespace AINodeTool
                 m_currentTime = 0;
                 if (IsInSightAngle(target))
                 {
-                    if(OnTargetSpotted != null) OnTargetSpotted(target);
+                    if(OnTargetSpotted != null) {
+                        OnTargetSpotted(target);
+                    }
                 }
             }
         }

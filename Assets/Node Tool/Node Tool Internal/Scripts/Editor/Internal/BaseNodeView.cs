@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using UnityEditor;
+using UnityEditor.UIElements;
 
 namespace NodeToolEditor
 {
@@ -11,17 +12,35 @@ namespace NodeToolEditor
     public class BaseNodeView : Node
     {
         //TODO: Move to get set
-        public BaseNode node;
+        public BaseNode BaseNode { get; set; }
         public Port input;
         public Port output;
 
-        public UI.GraphEditor GraphEditor { get; set; } 
+        public float UpdateTime { get; set; } = 0.5f; //Will be able to change this in settigns
+
+        public UI.GraphEditor GraphEditor { get; set; }
 
         public Action<BaseNodeView> OnNodeSelected;
 
+        private float m_CurrentUpdateTime = 0f;
+
+        private delegate void ChangeNodeProperties(Type node);
+        private event ChangeNodeProperties OnNodePropertiesChange;
+
+        private VisualElement m_Panel;
+        private Label m_NodeName;
+        private ColorField m_NodeColour;
+        private ColorField m_TextColour;
+        private Button m_CloseButton;
+
+        private Color m_NodeSaveColour;
+        private Color m_TextSaveColour;
+
         public BaseNodeView(BaseNode p_node)
         {
+            m_CurrentUpdateTime = UpdateTime;
             NodeData(p_node);
+            OnNodePropertiesChange += NodePropertiesChanged;
             Draw();
         }
 
@@ -30,46 +49,81 @@ namespace NodeToolEditor
 
         }
 
+        private void SetUpElements()
+        {
+            m_Panel = GraphEditor.Q<VisualElement>("CustomNodeEditor");
+            m_NodeName = GraphEditor.Q<Label>("SelectedNodeName");
+            m_NodeColour = GraphEditor.Q<ColorField>("NodeColourPicker");
+            m_TextColour = GraphEditor.Q<ColorField>("TextColourPicker");
+            m_CloseButton = GraphEditor.Q<Button>("CloseButton");
+        }
+
         private void NodeData(BaseNode p_node)
         {
-            node = p_node;
+            BaseNode = p_node;
             title = p_node.name;
             viewDataKey = p_node.m_guid;
 
-            style.left = node.m_position.x;
-            style.top = node.m_position.y;
-            style.color = Color.black;
+            style.left = BaseNode.m_position.x;
+            style.top = BaseNode.m_position.y;
+
+            if (p_node.GetType().Namespace != "NodeTool")
+            {
+                if(ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString(BaseNode.Guid + " Node Colour"), out m_NodeSaveColour))
+                {
+                    titleContainer.style.backgroundColor = m_NodeSaveColour;
+                }else
+                {
+                    titleContainer.style.backgroundColor = Color.gray;
+                }
+
+                if(ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString(BaseNode.Guid + " Text Colour"), out m_TextSaveColour))
+                {
+                    titleContainer.Q<Label>().style.color = m_TextSaveColour;
+                }
+                else
+                {
+                    titleContainer.Q<Label>().style.color = Color.white;
+                }
+            }
+            else
+            {
+                titleContainer.style.backgroundColor = Color.gray;
+                titleContainer.Q<Label>().style.color = Color.white;
+            }
         }
 
         private void Draw()
         {
             VisualElement customDataContainer = new VisualElement();
+
             DrawPortInput();
             DrawPortOutput();
 
             DrawNodeElements(customDataContainer);
-
             extensionContainer.Add(customDataContainer);
+
             RefreshExpandedState();
         }
 
+
         private void DrawPortInput()
         {
-            if (node is not RootNode)
+            if (BaseNode is not RootNode || BaseNode is not EventNode)
             {
-                if (node is PureNode)
+                if (BaseNode is PureNode)
                 {
                     input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(BaseNode));
                     inputContainer.Add(input);
                 }
 
-                if (node is SingleNode)
+                if (BaseNode is SingleNode)
                 {
                     input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(BaseNode));
                     inputContainer.Add(input);
                 }
 
-                if (node is MultiNode)
+                if (BaseNode is MultiNode)
                 {
                     input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(BaseNode));
                     inputContainer.Add(input);
@@ -79,22 +133,29 @@ namespace NodeToolEditor
 
         private void DrawPortOutput()
         {
-            if (node is not PureNode)
+            if (BaseNode is not PureNode)
             {
-                if (node is RootNode)
+                if (BaseNode is RootNode)
                 {
                     output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(BaseNode));
 
                     outputContainer.Add(output);
                 }
 
-                if (node is SingleNode)
+                if (BaseNode is EventNode)
+                {
+                    output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(BaseNode));
+
+                    outputContainer.Add(output);
+                }
+
+                if (BaseNode is SingleNode)
                 {
                     output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(BaseNode));
                     outputContainer.Add(output);
                 }
 
-                if (node is MultiNode)
+                if (BaseNode is MultiNode)
                 {
                     output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(BaseNode));
                     outputContainer.Add(output);
@@ -105,8 +166,8 @@ namespace NodeToolEditor
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
-            node.m_position.x = newPos.x;
-            node.m_position.y = newPos.y;
+            BaseNode.m_position.x = newPos.x;
+            BaseNode.m_position.y = newPos.y;
         }
 
         public override void OnSelected()
@@ -114,11 +175,6 @@ namespace NodeToolEditor
             base.OnSelected();
             if (OnNodeSelected != null)
             {
-                var colourPicker = GraphEditor.Q<UnityEditor.UIElements.ColorField>("ColourPicker");
-                if(colourPicker != null) { 
-                    titleContainer.style.backgroundColor = colourPicker.value;  
-                }
-
                 OnNodeSelected.Invoke(this);
             }
         }
@@ -129,12 +185,55 @@ namespace NodeToolEditor
             var types = TypeCache.GetTypesDerivedFrom<BaseNode>();
             foreach (var type in types)
             {
-                if (type.Name == node.GetType().Name && type.Namespace != "NodeTool") //Remove internal nodes from being able to be opened
+                if (type.Name == BaseNode.GetType().Name && type.Namespace != "NodeTool") //Remove internal nodes from being able to be opened
                 {
 
                     evt.menu.AppendAction($"[Open Script] {type.Name}", action => MenuOpenScript(type));
+                    evt.menu.AppendAction($"[Editor Node Properties] {type.Name}", action => EditNodeProperties(type));
                     evt.menu.AppendSeparator();
                 }
+            }
+        }
+
+        private void EditNodeProperties(Type node)
+        {
+            SetUpElements();
+
+            if (m_Panel != null)
+            {
+                m_Panel.visible = true;
+                m_NodeName.text = "Selected Node: " + node.Name;
+                m_NodeColour.value = m_NodeSaveColour;
+                titleContainer.style.backgroundColor = m_NodeColour.value;
+                m_TextColour.value = m_TextSaveColour;
+                titleContainer.Q<Label>().style.color = m_TextColour.value;
+                m_CloseButton.clicked += CloseNodeProperties;
+            }
+        }
+
+        private void NodePropertiesChanged(Type node)
+        {
+            if (m_Panel != null && m_NodeColour != null && m_NodeName != null)
+            {
+                if (m_Panel.visible)
+                {
+                    titleContainer.style.backgroundColor = m_NodeColour.value;
+                    titleContainer.Q<Label>().style.color = m_TextColour.value;
+                    m_NodeSaveColour = m_NodeColour.value;
+                    m_TextSaveColour = m_TextColour.value;
+                    PlayerPrefs.SetString(BaseNode.Guid + " Node Colour", ColorUtility.ToHtmlStringRGB(m_NodeSaveColour));
+                    PlayerPrefs.SetString(BaseNode.Guid + " Text Colour", ColorUtility.ToHtmlStringRGB(m_TextSaveColour));
+                }
+            }
+        }
+
+        private void CloseNodeProperties()
+        {
+            if (OnNodePropertiesChange != null) OnNodePropertiesChange(BaseNode.GetType());
+
+            if (m_Panel != null)
+            {
+                m_Panel.visible = false;
             }
         }
 

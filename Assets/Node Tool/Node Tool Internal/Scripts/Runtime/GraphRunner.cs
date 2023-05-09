@@ -8,7 +8,7 @@ namespace NodeTool
     public sealed class GraphRunner : MonoBehaviour
     {
         [SerializeField] private BaseGraph graph;
-
+        
         private void Start()
         {
             if(graph)
@@ -18,6 +18,7 @@ namespace NodeTool
                 foreach(BaseNode node in graph.nodes)
                 {
                     node.ParentObject = this.gameObject; 
+                    if(node is EventNode) return;
                 }
 
                 graph.StartGraph();

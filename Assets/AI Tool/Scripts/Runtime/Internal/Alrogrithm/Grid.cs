@@ -6,7 +6,7 @@ namespace AINodeToolInternal
 {
     [RequireComponent(typeof(PathFinding))]
     [AddComponentMenu("AI Node Tool/ Nav Mesh Grid")]
-    [DefaultExecutionOrder(-1)]
+    [DefaultExecutionOrder(-2)]
     public class Grid : MonoBehaviour
     {
         [field: SerializeField] public bool CanSeeNavmesh { get; set; }
@@ -43,7 +43,7 @@ namespace AINodeToolInternal
             {
                 for (int y = 0; y < m_GridSizeY; y++)
                 {   
-                    Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * m_NodeDiameter + m_NodeRaduis) + Vector3.forward * (y * m_NodeDiameter + m_NodeRaduis);
+                    Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * m_NodeDiameter + m_NodeRaduis) + Vector3.forward * (y * m_NodeDiameter + m_NodeRaduis + 0.5f);
                     bool walkable = !(Physics.CheckSphere(worldPoint, m_NodeRaduis, walkableLayerMask));
                     m_Grid[x,y] = new Node(walkable, worldPoint, x, y);
                 }

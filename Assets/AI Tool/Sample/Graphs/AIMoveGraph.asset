@@ -1,20 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7237212456048476109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b714c696672ea934ea369cce2de0a3be, type: 3}
-  m_Name: DoOnceNode
-  m_EditorClassIdentifier: 
-  m_guid: 2ab2f8502adad924b8a81ace1031cf55
-  m_position: {x: 0, y: 0}
-  childNode: {fileID: 0}
 --- !u!114 &-5233033136863846347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28,8 +13,24 @@ MonoBehaviour:
   m_Name: RandomMoveNode
   m_EditorClassIdentifier: 
   m_guid: fc2d7aaa9f7dbbb4980e013783635677
-  m_position: {x: 337, y: 0}
+  m_position: {x: 340, y: 0}
   walkRaduis: 15
+--- !u!114 &-269797262877985670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55dbb6353dd1f7d4893ad192ff624117, type: 3}
+  m_Name: RepeatNode
+  m_EditorClassIdentifier: 
+  m_guid: 47647a52c5605a547974f0a6c10e9490
+  m_position: {x: 134, y: 0}
+  childNode: {fileID: -5233033136863846347}
+  duration: 2.5
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,7 +47,7 @@ MonoBehaviour:
   nodes:
   - {fileID: 3086046182924737248}
   - {fileID: -5233033136863846347}
-  - {fileID: -7237212456048476109}
+  - {fileID: -269797262877985670}
   isActive: 0
   graphName: Node Graph
 --- !u!114 &3086046182924737248
@@ -63,4 +64,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_guid: d9a053847ddd4a14dafa7062f50a9ba5
   m_position: {x: 0, y: 0}
-  childNode: {fileID: 0}
+  childNode: {fileID: -269797262877985670}

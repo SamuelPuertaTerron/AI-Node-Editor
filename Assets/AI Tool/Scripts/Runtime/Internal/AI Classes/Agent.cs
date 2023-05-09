@@ -22,7 +22,7 @@ namespace AINodeTool
 
         private List<AINodeToolInternal.Node> m_Path; //The path to follow
         private int m_PathIndex = 0;
-        private PathFinding m_PathFinding;
+        private PathRequest m_PathRequest;
 
         /// <summary>
         /// Set the Destination for this agent to go to
@@ -30,20 +30,20 @@ namespace AINodeTool
         /// <param name="destination"> The desitnation as a Vector3</param>
         public void SetDestination(Vector3 destination)
         {
-            if (m_PathFinding == null)
+            if (m_PathRequest == null)
             {
                 Debug.LogError("Pathfinding Instance is Null: Place a grid component on a GameObject");
             }
-
-            m_Path = m_PathFinding.RequestPath(transform.position, destination); //Calls the Algorithm
+            HasReachedPath = false;
+            m_Path = PathRequest.Instance.RequestPath(transform.position, destination); //Calls the Algorithm
             m_PathIndex = 0;
         }
 
         private void Awake()
         {
-            m_PathFinding = FindObjectOfType<PathFinding>();
+            m_PathRequest = FindObjectOfType<PathRequest>();
 
-            if (m_PathFinding == null)
+            if (m_PathRequest == null)
             {
                 Debug.LogError("Pathfinding Instance is Null: Place a grid component on a GameObject");
             }
@@ -58,14 +58,13 @@ namespace AINodeTool
             transform.position = Vector3.MoveTowards(transform.position, currentPathPosition, speed * Time.deltaTime);
 
             //Increments the path index each time the AI has reached the path position
-            if (transform.position == currentPathPosition)
+            if (Vector3.Distance(transform.position, currentPathPosition) < 1)
             {
                 m_PathIndex++;
                 if (m_PathIndex >= m_Path.Count)
                 {
                     HasReachedPath = true;
                     m_Path = null;
-                    HasReachedPath = false;
                 }
             }
         }

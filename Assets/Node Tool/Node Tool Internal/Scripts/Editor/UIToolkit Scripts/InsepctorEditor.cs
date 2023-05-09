@@ -23,7 +23,7 @@ namespace NodeToolEditor.UI
         {
             Clear();
             Object.DestroyImmediate(m_editor);
-            m_editor = Editor.CreateEditor(nodeView.node);
+            m_editor = Editor.CreateEditor(nodeView.BaseNode);
             IMGUIContainer container = new IMGUIContainer(() => { m_editor.OnInspectorGUI(); });
             Add(container);
         }

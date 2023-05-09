@@ -9,6 +9,7 @@ namespace AINodeToolInternal
         Optimazation Improvements:
             Multithreading
      */
+    [DefaultExecutionOrder(-2)]
     public class PathFinding : MonoBehaviour
     {
         private Grid m_Grid;
@@ -25,9 +26,7 @@ namespace AINodeToolInternal
 
         public List<Node> RequestPath(Vector3 start, Vector3 dest)
         {
-            List<Node> path = FindPath(start, dest);
-
-            return path;
+            return FindPath(start, dest);
         }
 
         #region Pseudo Code
