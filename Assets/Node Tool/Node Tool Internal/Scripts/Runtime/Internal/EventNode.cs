@@ -6,17 +6,17 @@ namespace NodeTool
 {
     public class EventNode : SingleNode
     {
-        public delegate void NodeEvent();
-        public event NodeEvent OnEvent;
+        //public delegate void NodeEvent();
+        //public event NodeEvent OnEvent;
 
-        public override void OnNodeStart()
-        {
-            OnEvent += CallEvent;
-        }
+        //public override void OnNodeStart()
+        //{
+        //    OnEvent += CallEvent;
+        //}
 
-        public virtual void CallEvent()
-        {
-        }
+        //public virtual void CallEvent()
+        //{
+        //}
     }
 }
 

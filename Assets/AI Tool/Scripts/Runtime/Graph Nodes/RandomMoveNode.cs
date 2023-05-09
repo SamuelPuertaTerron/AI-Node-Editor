@@ -19,11 +19,11 @@ namespace AINodeTool
             {
 
                 //bounds size should always have 0 on Y if in 3D mode or 0 on Z in 2D mode
-                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis)));
             }
             else
             {
-                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis)));
             }
         }
 
@@ -32,11 +32,11 @@ namespace AINodeTool
             if (m_bounds)
             {
                 //bounds size should always have 0 on Y if in 3D mode or 0 on Z in 2D mode
-                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis)));
             }
             else
             {
-                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), Random.Range(-10, 10)));
+                ParentObject.GetComponent<AINodeTool.Agent>().SetDestination(new Vector3(Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis), Random.Range(-walkRaduis, walkRaduis)));
             }
         }
     }

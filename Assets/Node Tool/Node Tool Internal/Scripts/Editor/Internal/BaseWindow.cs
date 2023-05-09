@@ -24,7 +24,7 @@ namespace NodeToolEditor
 
         protected virtual void CloseWindow()
         {
-
+            
         }
 
         //----------------------- Private -------------------------//
