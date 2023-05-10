@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AINodeTool
 {
-    [ExecuteInEditMode, AddComponentMenu("AI Node Tool / Sight"), DefaultExecutionOrder(-1)]
+    [AddComponentMenu("AI Node Tool / Sight"), DefaultExecutionOrder(-1)]
     public class Sight : MonoBehaviour
     {
         public bool IsInSight { get; private set; }
@@ -16,11 +16,15 @@ namespace AINodeTool
         [SerializeField, Tooltip("This can be kept null")] private Transform lookPoint;
         [SerializeField, Tooltip("The time between the AI checks for objects \n " +
             "The smaller the value the quicker will check \n " +
-            "The Larger the value the longer will check")] private float updateTime = 0.25f;
+            "The Larger the value the longer will check")]
+        private float updateTime = 0.25f;
+        [SerializeField] private LayerMask interactionMask = 9;
         private float m_angle;
         private Vector3 m_difference;
         private float m_currentTime;
         private GameObject m_TargetedObject;
+        private int m_TargetCount;
+        private Collider[] colliders = new Collider[50];
 
         /// <summary>
         /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -32,69 +36,54 @@ namespace AINodeTool
             if (m_currentTime >= updateTime)
             {
                 m_currentTime = 0;
-                if (IsInSightAngle())
+
+                m_TargetCount = Physics.OverlapSphereNonAlloc(transform.position, 10.0f, colliders, interactionMask, QueryTriggerInteraction.Collide);
+
+                for (int i = 0; i < m_TargetCount; i++)
                 {
-                    if (OnTargetSpotted != null)
+                    //Check if something is int sight
+                    if (colliders[i] != null)
                     {
-                        IsInSight = true;
-                        Debug.Log("Spotted");
-                        OnTargetSpotted();
+                        if (IsInSightAngle(colliders[i].gameObject))
+                        {
+                            Debug.Log("Object in sight");
+                        }
                     }
-                }
-                else
-                {
-                    IsInSight = false;
                 }
             }
         }
 
-        private bool IsInSightAngle()
+        private bool IsInSightAngle(GameObject obj)
         {
-            RaycastHit rayhit;
+            Vector3 origin = transform.position;
+            Vector3 dest = obj.transform.position;
+            Vector3 direction = origin - dest;
+            m_difference = direction;
+            if (direction.y < 0) return false;
 
-            if (lookPoint)
+            direction.y = 0;
+            float angle = Vector3.Angle(direction, transform.forward);
+            if(angle > m_angle)
             {
-                if (Physics.Raycast(lookPoint.position, lookPoint.forward * 10.0f, out rayhit))
-                {
-                    if (rayhit.collider.CompareTag("Player"))
-                    {
-                        m_TargetedObject = rayhit.collider.gameObject;
-
-                        m_difference = rayhit.collider.transform.position - lookPoint.position;
-                        m_angle = Vector3.Angle(transform.position, transform.forward);
-                        return m_angle < sightAngle;
-                    }
-                    // m_difference = target.transform.position - new Vector3(transform.position.x, 0.50f, transform.position.z);
-                    // m_angle = Vector3.Angle(transform.position, transform.forward);
-                    // return m_angle < sightAngle;
-                }
-            }
-            else
-            {
-                if (Physics.Raycast(transform.position, transform.forward * 10.0f, out rayhit))
-                {
-                    if (rayhit.collider.CompareTag("Player"))
-                    {
-                        m_TargetedObject = rayhit.collider.gameObject;
-
-                        m_difference = rayhit.collider.transform.position - new Vector3(transform.position.x, 0.80f, transform.position.z);
-                        m_angle = Vector3.Angle(transform.position, transform.forward);
-                        return m_angle < sightAngle;
-                    }
-
-                    Debug.DrawRay(transform.position, transform.forward * 10.0f, Color.red);
-                }
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         private GameObject GetTargetedObject()
         {
-            if(!m_TargetedObject)
+            if (!m_TargetedObject)
                 return m_TargetedObject;
 
             return null;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, 10.0f);
+
+            Gizmos.DrawWireCube(transform.position, m_difference);
         }
     }
 }

@@ -266,6 +266,9 @@ MonoBehaviour:
   sightAngle: 80
   lookPoint: {fileID: 0}
   updateTime: 0.1
+  interactionMask:
+    serializedVersion: 2
+    m_Bits: 10
 --- !u!1 &117517959
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +547,9 @@ MonoBehaviour:
   sightAngle: 80
   lookPoint: {fileID: 0}
   updateTime: 0.1
+  interactionMask:
+    serializedVersion: 2
+    m_Bits: 520
 --- !u!136 &446386626
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1057,7 +1063,7 @@ GameObject:
   - component: {fileID: 655185494}
   - component: {fileID: 655185493}
   - component: {fileID: 655185492}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
