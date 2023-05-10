@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace AINodeTool
 {
-    //TODO: Make Multiple Paths of waypoint paths
-
     [AddComponentMenu("AI Node Tool/ Way Point Manager")]
     [ExecuteInEditMode]
     public class WayPointManager : MonoBehaviour

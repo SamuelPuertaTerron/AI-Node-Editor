@@ -137,6 +137,11 @@ namespace AINodeToolEditor
 
             EditorGUILayout.Space(10);
 
+            DisplayCurrentPaths(wayPointManager);
+        }
+
+        private void DisplayCurrentPaths(WayPointManager wayPointManager)
+        {
             EditorGUI.BeginDisabledGroup(true);
             {
                 //List of current path in the waypoint managers

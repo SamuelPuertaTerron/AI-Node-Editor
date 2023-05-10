@@ -67,6 +67,8 @@ namespace NodeToolEditor
             style.left = BaseNode.m_position.x;
             style.top = BaseNode.m_position.y;
 
+            //TODO: Make a better saving / loading system.
+
             if (p_node.GetType().Namespace != "NodeTool")
             {
                 if(ColorUtility.TryParseHtmlString("#" + PlayerPrefs.GetString(BaseNode.Guid + " Node Colour"), out m_NodeSaveColour))
@@ -223,6 +225,7 @@ namespace NodeToolEditor
                     m_TextSaveColour = m_TextColour.value;
                     PlayerPrefs.SetString(BaseNode.Guid + " Node Colour", ColorUtility.ToHtmlStringRGB(m_NodeSaveColour));
                     PlayerPrefs.SetString(BaseNode.Guid + " Text Colour", ColorUtility.ToHtmlStringRGB(m_TextSaveColour));
+                    SavingSystem.Save("Node" + BaseNode.name, m_NodeSaveColour.ToString());
                 }
             }
         }

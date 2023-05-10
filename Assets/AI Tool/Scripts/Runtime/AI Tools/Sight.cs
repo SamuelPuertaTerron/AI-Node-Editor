@@ -4,15 +4,20 @@ using UnityEngine;
 
 namespace AINodeTool
 {
-    [AddComponentMenu("AI Node Tool / Sight"), DefaultExecutionOrder(-1)]
+    /*
+        Reworking
+        Should not be used until it is done
+    */
+    //[AddComponentMenu("AI Node Tool / Sight"), DefaultExecutionOrder(-1)]
     public class Sight : MonoBehaviour
     {
         public bool IsInSight { get; private set; }
-
-        public delegate void TargetSpotted();
-        public event TargetSpotted OnTargetSpotted;
-
-        [SerializeField] private float sightAngle = 80f;
+        
+        
+        //public delegate void TargetSpotted();
+        //public event TargetSpotted OnTargetSpotted; 
+        
+        //[SerializeField] private float sightAngle = 80f;
         [SerializeField, Tooltip("This can be kept null")] private Transform lookPoint;
         [SerializeField, Tooltip("The time between the AI checks for objects \n " +
             "The smaller the value the quicker will check \n " +
