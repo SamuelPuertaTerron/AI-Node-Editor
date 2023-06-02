@@ -6,3 +6,4 @@ Doucmentation can be found here:
 https://samuelpuertaterron.github.io/Resources/DocumentationSite/AITool.html
 
 Link to the Download here:
+https://github.com/SamuelPuertaTerron/AI-Node-Editor/releases
