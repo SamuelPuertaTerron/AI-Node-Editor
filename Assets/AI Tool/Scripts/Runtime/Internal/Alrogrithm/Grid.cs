@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AINodeToolInternal
-{
+namespace AINodeToolInternal {
     [RequireComponent(typeof(PathFinding))]
-    [AddComponentMenu("AI Node Tool/ Nav Mesh Grid")]
+    [AddComponentMenu("AI Node Tool/Nav Mesh/Nav Mesh Grid")]
     [DefaultExecutionOrder(-2)]
-    public class Grid : MonoBehaviour
-    {
+    public class Grid : MonoBehaviour {
         [field: SerializeField] public bool CanSeeNavmesh { get; set; }
         public Node[,] WorldGrid { get { return m_Grid; } }
 
@@ -19,11 +17,9 @@ namespace AINodeToolInternal
         private float m_NodeDiameter;
         private int m_GridSizeX, m_GridSizeY;
 
-        private void Awake()
-        {
+        private void Awake() {
             Grid grid = FindObjectOfType<Grid>();
-            if(grid != this)
-            {
+            if (grid != this) {
                 Debug.LogError("Found more than one instance of Gird in the scene. Can only have one instance of grid within this Scene.");
             }
 
@@ -33,25 +29,21 @@ namespace AINodeToolInternal
             CreateGrid();
         }
 
-        private void CreateGrid()
-        {
+        private void CreateGrid() {
             m_Grid = new Node[m_GridSizeX, m_GridSizeY];
 
             Vector3 worldBottomLeft = new Vector3(transform.position.x, transform.position.y, transform.position.z) - Vector3.right * worldSize.x / 2 - Vector3.forward * worldSize.y / 2;
 
-            for (int x = 0; x < m_GridSizeX; x++)
-            {
-                for (int y = 0; y < m_GridSizeY; y++)
-                {   
+            for (int x = 0; x < m_GridSizeX; x++) {
+                for (int y = 0; y < m_GridSizeY; y++) {
                     Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * m_NodeDiameter + m_NodeRaduis) + Vector3.forward * (y * m_NodeDiameter + m_NodeRaduis + 0.5f);
                     bool walkable = !(Physics.CheckSphere(worldPoint, m_NodeRaduis, walkableLayerMask));
-                    m_Grid[x,y] = new Node(walkable, worldPoint, x, y);
+                    m_Grid[x, y] = new Node(walkable, worldPoint, x, y);
                 }
             }
         }
 
-        public Node GetNodeFromWorldPoint(Vector3 worldPoint)
-        {
+        public Node GetNodeFromWorldPoint(Vector3 worldPoint) {
             float percentX = (worldPoint.x + worldSize.x / 2) / worldSize.x;
             float percentY = (worldPoint.z + worldSize.y / 2) / worldSize.y;
 
@@ -61,26 +53,28 @@ namespace AINodeToolInternal
             int x = Mathf.RoundToInt((m_GridSizeX - 1) * percentX);
             int y = Mathf.RoundToInt((m_GridSizeY - 1) * percentY);
 
+            if (x > m_GridSizeX || y > m_GridSizeY) {
+                Debug.LogError("Grid size is out of range");
+                Debug.Break();
+                return null;
+            }
+
             return m_Grid[x, y];
         }
 
-        public List<Node> GetNeighbours(Node node)
-        {
+        public List<Node> GetNeighbours(Node node) {
             List<Node> nodes = new List<Node>();
 
-            for(int x = -1; x <= 1; x++)
-            {
-                for(int y = -1; y <= 1; y++)
-                {
-                    if(x == 0 && y == 0)
+            for (int x = -1; x <= 1; x++) {
+                for (int y = -1; y <= 1; y++) {
+                    if (x == 0 && y == 0)
                         continue;
-                    
+
                     int checkX = node.GridX + x;
                     int checkY = node.GridY + y;
 
-                    if(checkX >= 0 && checkX < m_GridSizeX && 
-                    checkY >= 0 && checkY < m_GridSizeY)
-                    {
+                    if (checkX >= 0 && checkX < m_GridSizeX &&
+                    checkY >= 0 && checkY < m_GridSizeY) {
                         nodes.Add(m_Grid[checkX, checkY]);
                     }
                 }
@@ -92,17 +86,14 @@ namespace AINodeToolInternal
         public List<Node> path;
 
         //TODO: Display nav mesh area using own mesh
-        private void OnDrawGizmos()
-        {
-            if(m_Grid != null && CanSeeNavmesh)
-            {
+        private void OnDrawGizmos() {
+            if (m_Grid != null && CanSeeNavmesh) {
                 Gizmos.DrawWireCube(transform.position, new Vector3(worldSize.x, 1, worldSize.y));
-                foreach(Node node in m_Grid)
-                {
+                foreach (Node node in m_Grid) {
                     Gizmos.color = (node.Walkable) ? Color.green : Color.red;
-                    if(path != null) if(path.Contains(node)) Gizmos.color = Color.black;
+                    if (path != null) if (path.Contains(node)) Gizmos.color = Color.black;
                     Gizmos.DrawCube(node.WorldPosition, Vector3.one * (m_NodeDiameter - 0.1f));
-                    
+
                 }
             }
         }

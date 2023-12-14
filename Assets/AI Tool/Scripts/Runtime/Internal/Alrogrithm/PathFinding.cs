@@ -3,29 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AINodeToolInternal
-{
+namespace AINodeToolInternal {
     /* 
         Optimazation Improvements:
             Multithreading
      */
     [DefaultExecutionOrder(-2)]
-    public class PathFinding : MonoBehaviour
-    {
+    public class PathFinding : MonoBehaviour {
         private Grid m_Grid;
 
-        private void Awake()
-        {
+        private void Awake() {
             m_Grid = FindObjectOfType<Grid>();
-            if (!m_Grid)
-            {
+            if (!m_Grid) {
                 m_Grid = gameObject.AddComponent<Grid>();
                 Debug.LogFormat($"Cannot find instance of Grid within the Scene. Has cretaed a temporary Grid component  on this {gameObject.name} object. This will destroyed when out of play mode."); //Cannot use LogWarning for some reason
             }
         }
 
-        public List<Node> RequestPath(Vector3 start, Vector3 dest)
-        {
+        public List<Node> RequestPath(Vector3 start, Vector3 dest) {
             return FindPath(start, dest);
         }
 
@@ -79,70 +74,59 @@ namespace AINodeToolInternal
         /// <summary>
         /// Core Algorithm Loop
         /// </summary>
-        private List<Node> FindPath(Vector3 startPos, Vector3 endPos)
-        {
+        private List<Node> FindPath(Vector3 startPos, Vector3 endPos) {
             Node startNode = m_Grid.GetNodeFromWorldPoint(startPos);
             Node endNode = m_Grid.GetNodeFromWorldPoint(endPos);
 
-            if (startNode.Walkable && endNode.Walkable)
-            {
+            if (startNode.Walkable && endNode.Walkable) {
                 List<Node> openSet = new List<Node>(); //Improve performance by using a custom data structure like a minHeap currenly takes a while to find a path
                 List<Node> closedSet = new List<Node>();
 
                 openSet.Add(startNode);
 
-                while (openSet.Count > 0)
-                {
+                while (openSet.Count > 0) {
                     Node currentNode = openSet[0]; //Set the current node to the start node
 
-                    for (int i = 1; i < openSet.Count; i++)
-                    {
+                    for (int i = 1; i < openSet.Count; i++) {
                         //Check if the next in the open set has a lower fcost to the current node and set the current node to n
-                        if (openSet[i].FCost < currentNode.FCost || openSet[i].FCost == currentNode.FCost && openSet[i].HCost < currentNode.HCost)
-                        {
+                        if (openSet[i].FCost < currentNode.FCost || openSet[i].FCost == currentNode.FCost && openSet[i].HCost < currentNode.HCost) {
                             currentNode = openSet[i];
                         }
                     }
 
-                    if (currentNode == endNode)
-                    {
-                        return RetracePath(startNode, endNode);;
+                    if (currentNode == endNode) {
+                        return RetracePath(startNode, endNode); ;
                     }
 
                     openSet.Remove(currentNode);
                     closedSet.Add(currentNode);
 
-                    foreach (Node node in m_Grid.GetNeighbours(currentNode).Where(n => n.Walkable && !closedSet.Contains(n)))
-                    {
+                    foreach (Node node in m_Grid.GetNeighbours(currentNode).Where(n => n.Walkable && !closedSet.Contains(n))) {
                         //Find the new g cost and check if it is lower than the current gcost
                         int newGCost = currentNode.GCost + Distance(currentNode, node);
-                        if (newGCost < node.GCost || !openSet.Contains(node))
-                        {
+                        if (newGCost < node.GCost || !openSet.Contains(node)) {
                             //Set the current node to the new node with the lower gcost
                             node.GCost = newGCost;
                             node.HCost = Distance(currentNode, node);
                             node.Parent = currentNode;
 
-                            if (!openSet.Contains(node))
-                            {
+                            if (!openSet.Contains(node)) {
                                 openSet.Add(node);
                             }
                         }
                     }
                 }
             }
- 
+
             return null;
         }
 
-        private List<Node> RetracePath(Node startNode, Node endNode)
-        {
+        private List<Node> RetracePath(Node startNode, Node endNode) {
             List<Node> path = new List<Node>();
             Node currentNode = endNode;
 
             //Loops through the parent nodes until it is equal to the start node
-            while (currentNode != startNode)
-            {
+            while (currentNode != startNode) {
                 path.Add(currentNode);
                 currentNode = currentNode.Parent;
             }
@@ -153,8 +137,7 @@ namespace AINodeToolInternal
             return path;
         }
 
-        private int Distance(Node current, Node nieghbour)
-        {
+        private int Distance(Node current, Node nieghbour) {
             //Estimates the distance from the current node to the neighbour
             int distance = Mathf.Abs((int)(current.GridX - nieghbour.GridX)) + Mathf.Abs((int)(current.GridY - nieghbour.GridY));
             return distance;

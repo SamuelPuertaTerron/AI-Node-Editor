@@ -3,47 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace AINodeTool
-{
+namespace AINodeTool {
     [AddComponentMenu("AI Node Tool/ Way Point Pathfinding")]
-    public class WaypointPathfinding : MonoBehaviour
-    {
+    public class WaypointPathfinding : MonoBehaviour {
+        //Pauses the agents AI
+        public bool IsPaused { get; set; } 
+        public PathfindingAgent Agent { get; private set; }
+
+
         [SerializeField] private AINodeToolInternal.WaypointPath path;
-        public Agent Agent { get; private set; }
+        [SerializeField] private bool reversePath;
+
 
         private NavMeshAgent agent;
 
         private int m_PathIndex = 0;
-        private void Start()
-        {
+        private void Start() {
             agent = GetComponent<NavMeshAgent>();
-        }
+            if (!path) {
+                Debug.LogError($"The path vairable on game object {gameObject.name} is null. Please assign it in the inspector.");
+                Debug.Break();
+            }
 
-        private void Update()
-        {
-            if (agent && path)
-            {
+            if (reversePath) {
+                path.Waypoints.Reverse();
+            }
+        }
+        private void Update() {
+
+            //Loops through the waypoints and updates the agents position to the next waypoint index. 
+            if (path && !IsPaused) {
                 agent.SetDestination(path.Waypoints[m_PathIndex].transform.position);
 
-                if (Vector3.Distance(path.Waypoints[m_PathIndex].transform.position, agent.transform.position) < 1.5f)
-                {
-                    if (path.Waypoints[m_PathIndex].actions != null) path.Waypoints[m_PathIndex].actions.Invoke();
+                if (Vector3.Distance(path.Waypoints[m_PathIndex].transform.position, agent.transform.position) < 1.5f) {
+                    if (path.Waypoints[m_PathIndex].actions != null) path.Waypoints[m_PathIndex].actions.Invoke(); //If the waypoint has actions than invoke them
 
                     m_PathIndex++;
 
-                    if (m_PathIndex >= path.Waypoints.Count)
-                    {
+                    if (m_PathIndex >= path.Waypoints.Count) {
                         m_PathIndex = 0;
                     }
                 }
             }
-            else
-            {
-                if(!agent) Debug.LogError("Agent is null. Please add a NavMeshAgent component to this gameobject");
-                if(!path) Debug.LogError("The path is null. Please add it in the inspector.");
-
-                Debug.Break();
-            }
         }
     }
 }
+
+

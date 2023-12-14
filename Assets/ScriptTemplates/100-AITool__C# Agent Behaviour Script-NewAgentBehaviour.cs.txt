@@ -1,0 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using AINodeTool;
+
+public class #SCRIPTNAME# : AgentBehaviour
+{
+    private void Start()
+	{
+	 
+	}
+	 
+	private void Update()
+	{
+	 
+	}
+}

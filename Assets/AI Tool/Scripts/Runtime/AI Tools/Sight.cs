@@ -1,94 +1,92 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-namespace AINodeTool
-{
-    /*
-        Reworking
-        Should not be used until it is done
-    */
-    //[AddComponentMenu("AI Node Tool / Sight"), DefaultExecutionOrder(-1)]
-    public class Sight : MonoBehaviour
-    {
+namespace AINodeTool {
+    [AddComponentMenu("AI Node Tool / Sight"), DefaultExecutionOrder(-1)]
+    public sealed class Sight : MonoBehaviour {
         public bool IsInSight { get; private set; }
-        
-        
-        //public delegate void TargetSpotted();
-        //public event TargetSpotted OnTargetSpotted; 
-        
-        //[SerializeField] private float sightAngle = 80f;
-        [SerializeField, Tooltip("This can be kept null")] private Transform lookPoint;
+        public float Raduis { get { return raduis; } }
+        public float Angle { get { return sightAngle; } }
+
+        public delegate void TargetSpotted(GameObject other);
+        public event TargetSpotted OnTargetSpotted;
+        public delegate void TargetLost();
+        public event TargetLost OnTargetLost;
+
+        [SerializeField] private float raduis;
+        [SerializeField, Range(0, 360)] private float sightAngle = 90f;
+        [SerializeField, Tooltip("This can be kept null. But Represent the transform which the AI will look from")] private Transform lookPoint;
         [SerializeField, Tooltip("The time between the AI checks for objects \n " +
             "The smaller the value the quicker will check \n " +
             "The Larger the value the longer will check")]
         private float updateTime = 0.25f;
         [SerializeField] private LayerMask interactionMask = 9;
-        private float m_angle;
-        private Vector3 m_difference;
-        private float m_currentTime;
+        private float m_Angle;
+        private float m_CurrentTime;
         private GameObject m_TargetedObject;
         private int m_TargetCount;
-        private Collider[] colliders = new Collider[50];
+        private Collider[] colliders = new Collider[10];
 
-        /// <summary>
-        /// Update is called every frame, if the MonoBehaviour is enabled.
-        /// </summary>
-        private void Update()
-        {
-            m_currentTime += Time.deltaTime;
-
-            if (m_currentTime >= updateTime)
-            {
-                m_currentTime = 0;
-
-                m_TargetCount = Physics.OverlapSphereNonAlloc(transform.position, 10.0f, colliders, interactionMask, QueryTriggerInteraction.Collide);
-
-                for (int i = 0; i < m_TargetCount; i++)
-                {
-                    //Check if something is int sight
-                    if (colliders[i] != null)
-                    {
-                        if (IsInSightAngle(colliders[i].gameObject))
-                        {
-                            Debug.Log("Object in sight");
-                        }
-                    }
-                }
-            }
-        }
-
-        private bool IsInSightAngle(GameObject obj)
-        {
-            Vector3 origin = transform.position;
-            Vector3 dest = obj.transform.position;
-            Vector3 direction = origin - dest;
-            m_difference = direction;
-            if (direction.y < 0) return false;
-
-            direction.y = 0;
-            float angle = Vector3.Angle(direction, transform.forward);
-            if(angle > m_angle)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private GameObject GetTargetedObject()
-        {
+        [Obsolete("Use Agent Behaviour script or the Events")]
+        public GameObject GetTargetedObject() {
             if (!m_TargetedObject)
                 return m_TargetedObject;
 
             return null;
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(transform.position, 10.0f);
+        /// <summary>
+        /// Update is called every frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        private void Update() {
+            m_CurrentTime += Time.deltaTime;
 
-            Gizmos.DrawWireCube(transform.position, m_difference);
+            if (m_CurrentTime >= updateTime) {
+                m_CurrentTime = 0;
+
+                m_TargetCount = Physics.OverlapSphereNonAlloc(transform.position, 10.0f, colliders, interactionMask, QueryTriggerInteraction.Collide);
+
+                if (m_TargetCount > 0) {
+                    for (int i = 0; i < m_TargetCount; i++) {
+                        //Check if something is int sight
+                        m_TargetedObject = colliders[i].gameObject;
+                        if (m_TargetedObject) {
+                            IsInSight = IsInSightAngle(m_TargetedObject);
+                            if (IsInSight) {
+                                if (OnTargetSpotted != null) OnTargetSpotted(m_TargetedObject);
+                            } else if (!IsInSight) {
+                                if (OnTargetLost != null) OnTargetLost();
+                            }
+                        }
+                    }
+                } else {
+                    // If was in sight but no longer is found than call the OnTargetLost event and set IsInSight to false
+                    if (IsInSight)
+                        if (OnTargetLost != null) OnTargetLost();
+                    IsInSight = false;
+                }
+            }
+        }
+
+        private bool IsInSightAngle(GameObject obj) {
+            if (obj != null) {
+                if (lookPoint) {
+                    //Gets the angle using the Dot Product
+                    float cosAngle = Vector3.Dot((obj.transform.position - lookPoint.position).normalized, transform.forward);
+                    m_Angle = Mathf.Acos(cosAngle) * Mathf.Rad2Deg;
+                } else {
+                    float cosAngle = Vector3.Dot((obj.transform.position - transform.position).normalized, transform.forward);
+                    m_Angle = Mathf.Acos(cosAngle) * Mathf.Rad2Deg;
+                }
+
+                return m_Angle < sightAngle; //Returns the size of the angle compared to the sightAngle
+            } else {
+                return false;
+            }
+        }
+
+        public Vector3 DirectionFromAngle(float angle) {
+            return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0, Mathf.Cos(angle * Mathf.Deg2Rad));
         }
     }
 }

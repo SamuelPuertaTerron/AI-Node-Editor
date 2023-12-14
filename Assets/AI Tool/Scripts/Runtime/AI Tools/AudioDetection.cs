@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AINodeTool
-{
-    [AddComponentMenu("AI Node Tool/ Audio Detection")]
-    public class AudioDetection : MonoBehaviour
-    {
-        public float Raduis { get { return raduis; } }
-        [SerializeField] private float raduis;
+namespace AINodeTool {
+    using UnityEngine.Audio;
 
-        private void Update() {
-            
+    [AddComponentMenu("AI Node Tool/ Audio Detection")]
+    public class AudioDetection : MonoBehaviour {
+        public delegate void HeardAudio(Sound sound);
+        public event HeardAudio OnHeardAudio;
+
+        public void RespondToSound(Sound sound) {
+            if (OnHeardAudio != null) OnHeardAudio(sound);
         }
     }
 

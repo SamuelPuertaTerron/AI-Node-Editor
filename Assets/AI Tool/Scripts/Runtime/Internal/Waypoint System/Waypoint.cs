@@ -6,7 +6,7 @@ namespace AINodeToolInternal {
     //A Waypoint which can be created using the Waypoint window
 
     public sealed class Waypoint : MonoBehaviour {
-        
+
         public UnityEvent actions;
 
         //Add actions to perform when the agent is within range    

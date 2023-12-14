@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Node%20Tool/Editor/Graph%20Editor/GraphEditorWindow.uss?fileID=7433441132597879392&amp;guid=424e70e6ee76bcb4a9e4198a52452006&amp;type=3#GraphEditorWindow" />
+    <uie:Toolbar>
+        <uie:ToolbarMenu tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" text="File" />
+    </uie:Toolbar>
+    <NodeToolEditor.UI.SplitVisualEditor name="MainWindow" fixed-pane-initial-dimension="250" orientation="Horizontal" fixed-pane-index="0" style="display: flex;">
+        <ui:VisualElement name="InspectorView" style="width: 250px; max-width: 400px; min-width: 200px; align-items: flex-start;">
+            <ui:Label tabindex="-1" text="Inspector" display-tooltip-when-elided="true" name="Label" style="width: 100%; font-size: 25px; -unity-font-style: bold; -unity-text-align: middle-left; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+            <NodeToolEditor.UI.InsepctorEditor style="height: 100%; max-width: 400px; min-width: 200px; width: 100%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="GraphWindow">
+            <NodeToolEditor.UI.GraphEditor focusable="true" style="height: 100%;">
+                <ui:VisualElement name="CustomNodeEditor" picking-mode="Ignore" focusable="true" usage-hints="-1" style="position: absolute; background-color: rgb(56, 56, 56); top: 10px; left: 350px; display: flex; visibility: hidden; align-items: auto; overflow: visible; transition-property: all, ignored; transition-duration: 0s, 0s; transition-timing-function: ease, ease; transition-delay: 0s, 0s; justify-content: flex-end; height: 60px; width: 370px; transform-origin: right top; scale: 1 1; rotate: 0;">
+                    <ui:Label tabindex="-1" text="Selected Node: Dialogue Node" display-tooltip-when-elided="true" name="SelectedNodeName" style="font-size: 17px; -unity-font-style: bold; align-items: flex-end; justify-content: space-around; flex-direction: column; flex-wrap: nowrap; -unity-text-align: upper-left; width: 100%;">
+                        <ui:Button tabindex="-1" text="X" display-tooltip-when-elided="true" name="CloseButton" style="background-color: rgb(183, 0, 0);" />
+                    </ui:Label>
+                    <uie:ColorField label="Node Colour" value="#717171FF" name="NodeColourPicker" style="width: 98%;" />
+                    <uie:ColorField label="Text Colour" value="#FFFFFFFF" name="TextColourPicker" style="width: 98%;" />
+                </ui:VisualElement>
+            </NodeToolEditor.UI.GraphEditor>
+        </ui:VisualElement>
+    </NodeToolEditor.UI.SplitVisualEditor>
+</ui:UXML>
