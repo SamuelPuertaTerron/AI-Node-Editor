@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace NodeToolEditor.Utils
         /// <param name="directoryPath">The path of the directory</param>
         public static void OpenDirectory(string directoryPath)
         {
-            if(!Directory.Exists(directoryPath)) 
+            if (!Directory.Exists(directoryPath))
             {
                 Debug.LogErrorFormat("Error: Cannot found path at {0}. Please provide the correct path or create the directory.", directoryPath);
                 return;
@@ -64,22 +65,44 @@ namespace NodeToolEditor.Utils
         public static void SaveFile(string saveLocation, string text)
         {
             string newSavePath = saveLocation + extensionName;
-            FileStream fileStream = new FileStream(newSavePath, 
-                                        FileMode.OpenOrCreate, 
-                                        FileAccess.ReadWrite, 
-                                        FileShare.None);
 
-            if(File.Exists(newSavePath))
+            PrintError<IOException>("Node Tool Error: Failed to save nood tool settings at path " + newSavePath + ".", () =>
             {
-                File.Create(newSavePath);
-            }
+                FileStream fileStream = new FileStream(newSavePath,
+                                FileMode.OpenOrCreate,
+                                FileAccess.ReadWrite,
+                                FileShare.None);
 
-           File.WriteAllText(newSavePath, text);
+                if (File.Exists(newSavePath))
+                {
+                    File.Create(newSavePath);
+                }
+
+                File.WriteAllText(newSavePath, text);
+            });
         }
 
         public static string ReadFile()
         {
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Runs through the code through a try-catch statement to find an exeception
+        /// </summary>
+        /// <typeparam name="TExecption">The Exception to check the code for</typeparam>
+        /// <param name="message">The error message to display</param>
+        /// <param name="action">The code to run through</param>
+        public static void PrintError<TExecption>(string message, Action action) where TExecption : Exception
+        {
+            try
+            {
+                action.Invoke();
+            }
+            catch (TExecption ex)
+            {
+                Debug.LogErrorFormat(message + "\n" + " Error Message: {0}", ex.Message);
+            }
         }
     }
 }
