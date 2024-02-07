@@ -4,18 +4,22 @@ using UnityEngine;
 using UnityEditor;
 
 
-namespace NodeToolEditor {
+namespace NodeToolEditor
+{
     using NodeTool;
 
     [CustomEditor(typeof(NodeTool.BaseGraph))]
-    public class GraphInspector : Editor {
+    public class GraphInspector : Editor
+    {
         BaseGraph baseGraph;
 
-        void OnEnable() {
+        void OnEnable()
+        {
             baseGraph = target as BaseGraph;
         }
 
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             NodeToolGUI.Header(baseGraph.graphName);
 
             baseGraph.graphName = EditorGUILayout.TextField(baseGraph.graphName);

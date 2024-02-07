@@ -6,8 +6,10 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 
-namespace NodeToolEditorInternal {
-    public class NodeToolCustomSettings : ScriptableObject {
+namespace NodeToolEditorInternal
+{
+    public class NodeToolCustomSettings : ScriptableObject
+    {
         public const string settingsPath = "Assets/Node Tool/Node Tool Internal/Editor/Settings/NodeToolSettings.asset";
 
         [SerializeField] private int m_Number;
@@ -15,9 +17,11 @@ namespace NodeToolEditorInternal {
 
         [SerializeField] private NodeColourGroup[] colourGroups;
 
-        internal static NodeToolCustomSettings GetOrCreaetSettings() {
+        internal static NodeToolCustomSettings GetOrCreaetSettings()
+        {
             var settings = AssetDatabase.LoadAssetAtPath<NodeToolCustomSettings>(settingsPath);
-            if (settings == null) {
+            if (settings == null)
+            {
                 settings = ScriptableObject.CreateInstance<NodeToolCustomSettings>();
                 AssetDatabase.CreateAsset(settings, settingsPath);
                 AssetDatabase.SaveAssets();
@@ -25,27 +29,33 @@ namespace NodeToolEditorInternal {
             return settings;
         }
 
-        internal static SerializedObject GetSerializedObject() {
+        internal static SerializedObject GetSerializedObject()
+        {
             return new SerializedObject(GetOrCreaetSettings());
         }
 
         [System.Serializable]
-        internal class NodeColourGroup {
+        internal class NodeColourGroup
+        {
             [field: SerializeField] public Color NodeColour { get; set; } = Color.gray;
             [field: SerializeField] public Color TextColour { get; set; } = Color.white;
         }
     }
 
-    static class NodeToolCustomSettingsUIElementsRegister {
+    static class NodeToolCustomSettingsUIElementsRegister
+    {
         [SettingsProvider]
-        public static SettingsProvider CreateCustomSettings() {
+        public static SettingsProvider CreateCustomSettings()
+        {
             // First parameter is the path in the Settings window.
             // Second parameter is the scope of this setting: it only appears in the Project Settings window.
-            var provider = new SettingsProvider("Project/NodeToolSettingsProvider", SettingsScope.Project) {
+            var provider = new SettingsProvider("Project/NodeToolSettingsProvider", SettingsScope.Project)
+            {
                 // By default the last token of the path is used as display name if no label is provided.
                 label = "Node Tool Settings",
                 // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
-                guiHandler = (searchContext) => {
+                guiHandler = (searchContext) =>
+                {
                     var settings = NodeToolCustomSettings.GetSerializedObject();
                     EditorGUILayout.PropertyField(settings.FindProperty("m_Number"), new GUIContent("My Number"));
                     EditorGUILayout.PropertyField(settings.FindProperty("m_SomeString"), new GUIContent("My String"));

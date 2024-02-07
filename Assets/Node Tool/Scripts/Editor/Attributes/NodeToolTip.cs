@@ -5,19 +5,24 @@ using UnityEngine;
 using System;
 using UnityEditor;
 
-namespace NodeTool {
+namespace NodeTool
+{
     [AttributeUsage(AttributeTargets.Field)]
-    sealed class NodeToolTipAttribute : PropertyAttribute {
+    sealed class NodeToolTipAttribute : PropertyAttribute
+    {
         public string Text { get; }
 
-        public NodeToolTipAttribute() {
+        public NodeToolTipAttribute()
+        {
 
         }
     }
 
     [CustomPropertyDrawer(typeof(NodeToolTipAttribute))]
-    public class NodeToolTipPropertyDrawer : PropertyDrawer {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+    public class NodeToolTipPropertyDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
             NodeToolTipAttribute toolTip = (NodeToolTipAttribute)attribute;
 
             GUI.Label(position, toolTip.Text);

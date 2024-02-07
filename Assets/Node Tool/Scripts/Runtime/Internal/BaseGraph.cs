@@ -3,25 +3,30 @@ using UnityEngine;
 using UnityEditor;
 using Unity.Collections;
 
-namespace NodeTool {
+namespace NodeTool
+{
     [CreateAssetMenu(fileName = "Node Graph", menuName = "Node Tool/Base Node Graph", order = 99)]
-    public class BaseGraph : ScriptableObject {
+    public class BaseGraph : ScriptableObject
+    {
         public RootNode rootNode;
         [ReadOnly] public List<BaseNode> nodes = new List<BaseNode>();
         public bool isActive = false;
         public string graphName = "Node Graph";
 
-        public void StartGraph() {
+        public void StartGraph()
+        {
             if (rootNode)
                 rootNode.OnNodeStart();
         }
 
-        public void UpdateGraph() {
+        public void UpdateGraph()
+        {
             if (rootNode)
                 rootNode.OnNodeUpdate();
         }
 
-        public BaseNode CreateNode(System.Type type) {
+        public BaseNode CreateNode(System.Type type)
+        {
             BaseNode node = ScriptableObject.CreateInstance(type) as BaseNode;
 #if UNITY_EDITOR
             node.GenerateGUID();
@@ -36,40 +41,48 @@ namespace NodeTool {
             return node;
         }
 
-        public List<BaseNode> GetChildren(BaseNode parent) {
+        public List<BaseNode> GetChildren(BaseNode parent)
+        {
             List<BaseNode> children = new List<BaseNode>();
 
             RootNode root = parent as RootNode;
-            if (root && root.childNode != null) {
+            if (root && root.childNode != null)
+            {
                 children.Add(root.childNode);
             }
 
             SingleNode singleNode = parent as SingleNode;
-            if (singleNode && singleNode.childNode != null) {
+            if (singleNode && singleNode.childNode != null)
+            {
                 children.Add(singleNode.childNode);
             }
 
             MultiNode multiNode = parent as MultiNode;
-            if (multiNode && multiNode.children != null) {
+            if (multiNode && multiNode.children != null)
+            {
                 return multiNode.children;
             }
 
             return children;
         }
 
-        public void AddChild(BaseNode parent, BaseNode child) {
+        public void AddChild(BaseNode parent, BaseNode child)
+        {
             RootNode root = parent as RootNode;
-            if (root) {
+            if (root)
+            {
                 root.childNode = child;
             }
 
             SingleNode singleNode = parent as SingleNode;
-            if (singleNode) {
+            if (singleNode)
+            {
                 singleNode.childNode = child;
             }
 
             MultiNode multiNode = parent as MultiNode;
-            if (multiNode) {
+            if (multiNode)
+            {
                 if (child || parent)
                     multiNode.children.Add(child);
                 else
@@ -77,24 +90,29 @@ namespace NodeTool {
             }
         }
 
-        public void RemoveChild(BaseNode parent, BaseNode child) {
+        public void RemoveChild(BaseNode parent, BaseNode child)
+        {
             RootNode root = parent as RootNode;
-            if (root) {
+            if (root)
+            {
                 root.childNode = null;
             }
 
             SingleNode singleNode = parent as SingleNode;
-            if (singleNode) {
+            if (singleNode)
+            {
                 singleNode.childNode = null;
             }
 
             MultiNode multiNode = parent as MultiNode;
-            if (multiNode) {
+            if (multiNode)
+            {
                 multiNode.children.Remove(child);
             }
         }
 
-        public void DeleteNode(BaseNode node) {
+        public void DeleteNode(BaseNode node)
+        {
             nodes.Remove(node);
 #if UNITY_EDITOR
             AssetDatabase.RemoveObjectFromAsset(node);
@@ -102,19 +120,24 @@ namespace NodeTool {
 #endif
         }
 
-        public BaseGraph Clone() {
+        public BaseGraph Clone()
+        {
             BaseGraph graph = Instantiate(this);
 
-            foreach (BaseNode node in nodes) {
+            foreach (BaseNode node in nodes)
+            {
                 node.OnCloneNode();
             }
 
             return graph;
         }
 
-        private void OnDisable() {
-            if (Application.isPlaying) {
-                foreach (BaseNode node in nodes) {
+        private void OnDisable()
+        {
+            if (Application.isPlaying)
+            {
+                foreach (BaseNode node in nodes)
+                {
                     node.OnNodeExit();
                 }
             }

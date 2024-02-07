@@ -2,23 +2,28 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace NodeToolEditor {
-    public class BaseWindow : EditorWindow {
+namespace NodeToolEditor
+{
+    public class BaseWindow : EditorWindow
+    {
         public VisualTreeAsset VisualTreeAsset { get { return m_VisualTreeAsset; } }
 
         public VisualElement Root { get { return m_root; } }
 
         public static string Title { get; set; }
 
-        protected virtual void Init() {
+        protected virtual void Init()
+        {
 
         }
 
-        protected virtual void DrawWindowElements() {
+        protected virtual void DrawWindowElements()
+        {
 
         }
 
-        protected virtual void CloseWindow() {
+        protected virtual void CloseWindow()
+        {
 
         }
 
@@ -27,7 +32,8 @@ namespace NodeToolEditor {
         [SerializeField] private VisualTreeAsset m_VisualTreeAsset = default;
         private VisualElement m_root;
 
-        private void CreateGUI() {
+        private void CreateGUI()
+        {
             m_root = rootVisualElement;
             m_VisualTreeAsset.CloneTree(m_root);
 
@@ -37,11 +43,13 @@ namespace NodeToolEditor {
             Init();
         }
 
-        private void OnGUI() {
+        private void OnGUI()
+        {
             DrawWindowElements();
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             CloseWindow();
         }
     }

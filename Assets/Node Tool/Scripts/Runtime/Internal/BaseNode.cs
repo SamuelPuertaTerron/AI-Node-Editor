@@ -4,20 +4,25 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-namespace NodeTool {
-    public abstract class BaseNode : ScriptableObject {
+namespace NodeTool
+{
+    public abstract class BaseNode : ScriptableObject
+    {
         public string Guid { get { return m_guid; } }
         public Vector2 Position { get { return m_position; } set { m_position = value; } }
 
         public bool IsSelected { get { return m_IsSelected; } set { m_IsSelected = value; } }
 
-        public GameObject ParentObject {
-            get {
+        public GameObject ParentObject
+        {
+            get
+            {
                 if (m_parentObject) return m_parentObject;
                 Debug.LogError("Parent Object is null");
                 return null;
             }
-            set {
+            set
+            {
                 m_parentObject = value;
             }
         }
@@ -46,11 +51,13 @@ namespace NodeTool {
         /// This is called when the node gets cloned
         /// </summary>
         /// <returns></returns>
-        public virtual BaseNode OnCloneNode() {
+        public virtual BaseNode OnCloneNode()
+        {
             return Instantiate(this);
         }
 #if UNITY_EDITOR
-        public void GenerateGUID() {
+        public void GenerateGUID()
+        {
             m_guid = GUID.Generate().ToString();
         }
 #endif
@@ -61,7 +68,8 @@ namespace NodeTool {
         private bool m_IsSelected;
         [HideInInspector] public string m_guid;
         [HideInInspector] public Vector2 m_position;
-        private void OnDisable() {
+        private void OnDisable()
+        {
             OnNodeExit();
         }
 

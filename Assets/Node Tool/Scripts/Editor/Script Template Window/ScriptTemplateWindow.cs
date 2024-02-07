@@ -2,17 +2,20 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ScriptTemplateWindow : EditorWindow {
+public class ScriptTemplateWindow : EditorWindow
+{
     [SerializeField]
     private VisualTreeAsset m_VisualTreeAsset = default;
 
     [MenuItem("Window/UI Toolkit/ScriptTemplateWindow")]
-    public static void ShowExample() {
+    public static void ShowExample()
+    {
         ScriptTemplateWindow wnd = GetWindow<ScriptTemplateWindow>();
         wnd.titleContent = new GUIContent("ScriptTemplateWindow");
     }
 
-    public void CreateGUI() {
+    public void CreateGUI()
+    {
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
 

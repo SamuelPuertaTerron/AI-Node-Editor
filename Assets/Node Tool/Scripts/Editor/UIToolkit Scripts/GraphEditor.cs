@@ -67,9 +67,9 @@ namespace NodeToolEditor.UI
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             //Make sure a node is not selecteds
-            foreach(BaseNode node in m_graph.nodes)
+            foreach (BaseNode node in m_graph.nodes)
             {
-                if(node.IsSelected)
+                if (node.IsSelected)
                 {
                     goto ExtraOptions;
                 }
@@ -88,10 +88,10 @@ namespace NodeToolEditor.UI
                 }
             }
 
-            ExtraOptions:
-                evt.menu.AppendSeparator();
-                evt.menu.AppendAction("Open Node Save Location", action => NodeToolUtilities.OpenDirectory(NodeToolUtilities.NodeToolSettingsPath));
-                evt.menu.AppendAction("Settings", action => Debug.Log("Open Settings"));
+        ExtraOptions:
+            evt.menu.AppendSeparator();
+            evt.menu.AppendAction("Open Node Save Location", action => NodeToolUtilities.OpenDirectory(NodeToolUtilities.NodeToolSettingsPath));
+            evt.menu.AppendAction("Settings", action => Debug.Log("Open Settings"));
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)

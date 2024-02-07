@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace NodeToolEditor {
+namespace NodeToolEditor
+{
     [AttributeUsage(AttributeTargets.Class)]
-    public class CustomNodeColourAttribute : Attribute {
+    public class CustomNodeColourAttribute : Attribute
+    {
 
         public Color32 Colour;
-        
-        public CustomNodeColourAttribute(Color32 c) {
+
+        public CustomNodeColourAttribute(Color32 c)
+        {
             Colour = c;
         }
     }

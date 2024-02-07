@@ -5,7 +5,7 @@
     </uie:Toolbar>
     <NodeToolEditor.UI.SplitVisualEditor name="MainWindow" fixed-pane-initial-dimension="250" orientation="Horizontal" fixed-pane-index="0" style="display: flex;">
         <ui:VisualElement name="InspectorView" style="width: 250px; max-width: 400px; min-width: 200px; align-items: flex-start;">
-            <ui:Label tabindex="-1" text="Inspector" display-tooltip-when-elided="true" name="Label" style="width: 100%; font-size: 25px; -unity-font-style: bold; -unity-text-align: middle-left; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+            <ui:Label tabindex="-1" text="Inspector" display-tooltip-when-elided="true" name="Label" style="width: 50%; font-size: 15px; -unity-font-style: bold; -unity-text-align: middle-left; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
             <NodeToolEditor.UI.InsepctorEditor style="height: 100%; max-width: 400px; min-width: 200px; width: 100%;" />
         </ui:VisualElement>
         <ui:VisualElement name="GraphWindow">

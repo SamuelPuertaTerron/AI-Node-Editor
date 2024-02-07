@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NodeToolEditor {
+namespace NodeToolEditor
+{
     [AttributeUsage(AttributeTargets.Class)]
-    sealed class CustomNodeEditorAttribute : PropertyAttribute {
+    sealed class CustomNodeEditorAttribute : PropertyAttribute
+    {
         private Type m_inspectedType;
 
-        public CustomNodeEditorAttribute(Type inspectedType) {
+        public CustomNodeEditorAttribute(Type inspectedType)
+        {
             this.m_inspectedType = inspectedType;
         }
 
